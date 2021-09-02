@@ -1,5 +1,5 @@
 // eventSource = new EventSource(`https://api.sibr.dev/replay/v1/replay?from=2020-08-27T01:00:08.17Z`);
-let gameIdx = 0;
+var gameIdx = 0;
 var updateTime = 4; //seconds, will control synth beats but also should control game updates 
 var updateGamesListFlag = true;
 var curseMultiplier = 1;
@@ -211,18 +211,20 @@ function doUpdates(event)
 	//TODO: still overlapping on inning change?
 
 	// Tone.Transport.stop();
-    let snapshots = digestSnapshots(event);
-	let snapshot = snapshots[gameIdx];
+    var snapshots = digestSnapshots(event);
+	if (updateGamesListFlag)
+	{
+		updateGamesList(snapshots);
+		gameIdx = snapshots[0].id;
+		updateGamesListFlag = false;
+	}
+	
+	var snapshot = getSnapshotById(snapshots,gameIdx);
 	if (Tone.context.state === "running" && snapshot.inning>-1)
 	{
 		Tone.Transport.cancel();
 
-		if (updateGamesListFlag)
-		{
-			updateGamesList(snapshots);
-			updateGamesListFlag = false;
-		}
-	
+		
 		if (snapshot.topOfInning)
 		{
 			strikeSynth = awaySynth;
@@ -345,9 +347,9 @@ function updateGamesList(allSnapshots)
 	{
 		away = allSnapshots[idx].awayTeamNickname;
 		home = allSnapshots[idx].homeTeamNickname;
-		str = `${idx+1}: ${away} at ${home}`;
+		str = `${away} at ${home}`;
 
-		$('#gamesOptions').append($('<option></option>').val(idx).html(str));
+		$('#gamesOptions').append($('<option></option>').val(allSnapshots[idx].id).html(str));
 	}
 }
 function flipUpdateFlag()
