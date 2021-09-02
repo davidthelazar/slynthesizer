@@ -305,7 +305,7 @@ function doUpdates(event)
 	
 		baseSequence.start(0);
 		console.log('|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|')				
-		console.log('inning: '+snapshot.inning);				
+		console.log('inning: '+snapshot.inning+1);				
 		console.log('strikes: '+snapshot.strikes);
 		console.log('balls: '+snapshot.balls);
 		console.log('outs: '+snapshot.outs);
