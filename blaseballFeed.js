@@ -107,7 +107,7 @@ var posHomeDrumSynth = new Tone.MembraneSynth({
 			// 	decay: 0.5,
 			// 	sustain: 0
 			// },
-				volume: 0
+				volume: 7
 		}).toDestination();
 var negHomeDrumSynth = new Tone.MembraneSynth({//}.toDestination();// {
 			pitchDecay: 0.4,
@@ -117,20 +117,20 @@ var negHomeDrumSynth = new Tone.MembraneSynth({//}.toDestination();// {
 				decay: 0.5,
 				sustain: 0
 			},
-				volume: 0
+			volume: 7
 		}).toDestination();
 var homeDrumSynth = new Tone.MembraneSynth().toDestination();		
 var homeSpacing = 0;
-var	homeDrumSequence = new Tone.Sequence(((time, pitch) => {
-			homeDrumSynth.triggerAttack(pitch, time);
-		}), [allNotes[rootIndex-12]], homeSpacing).start(0);
+// var	homeDrumSequence = new Tone.Sequence(((time, pitch) => {
+// 			homeDrumSynth.triggerAttack(pitch, time);
+// 		}), [allNotes[rootIndex-12]], homeSpacing).start(0);
 
 var lowPass = new Tone.Filter({
 		  frequency: 8000,
 		}).toDestination();
 
 var posAwayDrumSynth = new Tone.NoiseSynth({
-	  volume: -15,
+	  volume: -8,
 	  noise: {
 	    type: 'white',
 	    playbackRate: 3
@@ -143,7 +143,7 @@ var posAwayDrumSynth = new Tone.NoiseSynth({
 	  },
 	}).connect(lowPass);
 var negAwayDrumSynth = new Tone.NoiseSynth({
-	volume: -10,
+	volume: -8,
 	noise:{
 		playbackRate: 1000,
 		type: "pink"
@@ -158,9 +158,9 @@ var negAwayDrumSynth = new Tone.NoiseSynth({
 var awayDrumSynth = new Tone.NoiseSynth().toDestination();			
 var awaySpacing = 0;
 
-var	awayDrumSequence = new Tone.Sequence(((time) => {
-			awayDrumSynth.triggerAttack(time);
-		}),[]).start(0);
+// var	awayDrumSequence = new Tone.Sequence(((time) => {
+// 			awayDrumSynth.triggerAttack(time);
+// 		}),[]).start(0);
 		
 		
 var baseSynth = new Tone.PolySynth({
@@ -203,10 +203,9 @@ var ballpeggio = [];
 
 Tone.Transport.start();
 function doUpdates(event)
-{		//TODO: negative scores
-	//TODO:don't play weird non-inning bits
+{		
 	//TODO: still overlapping on inning change?
-	//TODO: Fix on iOS
+
 	// Tone.Transport.stop();
     let snapshots = digestSnapshots(event);
 	let snapshot = snapshots[gameIdx];
@@ -238,16 +237,15 @@ function doUpdates(event)
 			homeSpacing = updateTime/(Math.abs(snapshot.homeScore));
 			if (snapshot.homeScore<0)
 			{
-				console.log('butts');
 				// homeDrumSynth = negHomeDrumSynth;
-				homeDrumSequence = new Tone.Sequence(((time, pitch) => {
+				var homeDrumSequence = new Tone.Sequence(((time, pitch) => {
 					negHomeDrumSynth.triggerAttack(pitch, time);
 				}), [allNotes[rootIndex-24]], homeSpacing).start(0);
 			}
 			else
 			{
 				// homeDrumSynth = posHomeDrumSynth;
-				homeDrumSequence = new Tone.Sequence(((time, pitch) => {
+				var homeDrumSequence = new Tone.Sequence(((time, pitch) => {
 					posHomeDrumSynth.triggerAttack(pitch, time);
 				}), [allNotes[rootIndex-24]], homeSpacing).start(0);				
 			}
@@ -262,10 +260,10 @@ function doUpdates(event)
 			awaySpacing = updateTime/(Math.abs(snapshot.awayScore));
 			if (snapshot.awayScore<0)
 			{
-				console.log('butts but away');
 				// awayDrumSynth = negAwayDrumSynth;
-				awayDrumSequence = new Tone.Sequence(((time,pitch) => {
+				var awayDrumSequence = new Tone.Sequence(((time,pitch) => {
 					negAwayDrumSynth.triggerAttack(time);
+					negAwayDrumSynth.triggerRelease(time+.23);					
 				}),[1],[awaySpacing]).start(0); //1 is just a bs placeholder
 				// awayDrumSequence = new Tone.Sequence(((time,pitch) => {
 				// 	awayDrumSynth.triggerAttack(pitch,time);
@@ -274,8 +272,9 @@ function doUpdates(event)
 			else
 			{
 				// awayDrumSynth = posAwayDrumSynth;
-				awayDrumSequence = new Tone.Sequence(((time,pitch) => {
+				var awayDrumSequence = new Tone.Sequence(((time,pitch) => {
 					posAwayDrumSynth.triggerAttack(time);
+					posAwayDrumSynth.triggerRelease(time+.23);
 				}),[1],[awaySpacing]).start(0); //1 is just a bs placeholder
 			}
 		}			
@@ -333,7 +332,6 @@ function getMinorIdx(scaleIdx)
 }
 function updateGamesList(allSnapshots)
 {
-	console.log('lol');
 	var away = '';
 	var home = '';
 	var str = '';
