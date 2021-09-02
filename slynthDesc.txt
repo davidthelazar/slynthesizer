@@ -1,0 +1,17 @@
+Game update rate is 4sec
+
+Main synth: 
+--changes oscillator/voice based on home/away team batting
+--increases root tone by half step every inning
+--For each strike, increase all tones in the ballpeggio below by [3,4,6,8] half steps above root
+--rising arpeggio of 2^(balls) tones each update, [0,2,4,5,6,7,9,11,12,14,16,17,18,19,21,23] half steps above strike+inning note
+--each out increases the wiggliness frequency of the low-pass filter
+
+Simple sine synth:
+--arpeggiates one note per occupied base [1:3,2:5,3:6,4:14] half steps above inning root, twice per game update
+
+Percussion synths:
+--home synth is kick-like, away synth is hihat-like
+--one hit per abs(score) each game update
+--synth voicing changes if score is negative
+
