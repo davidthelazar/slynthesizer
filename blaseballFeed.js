@@ -9,14 +9,16 @@ document.getElementById('startButton').addEventListener('click', () => {initiali
 document.getElementById('curseButton').addEventListener('click', () => {increaseCurse()});
 this.timeGrabber = document.getElementById('startTime');
 this.gameGrabber = document.getElementById('gamesOptions');
-
-this.eventSource = new EventSource(`https://api.sibr.dev/replay/v1/replay?from=2021-07-21T01:00:08.17Z`);
+var dateTemp = new Date('2021-07-21T01:00:08.17');
+this.eventSource = new EventSource(`https://api.sibr.dev/replay/v1/replay?from=${dateTemp.toISOString()}`);
 this.eventSource.onmessage = doUpdates;
 let self = this;
 this.timeGrabber.addEventListener('change', (event) => {
 
 	self.eventSource.close();
-	self.eventSource = new EventSource(`https://api.sibr.dev/replay/v1/replay?from=${event.target.value}&interval=${updateTime*1000}`);
+	var dateTemp = new Date(event.target.value);
+	console.log(dateTemp.toUTCString());
+	self.eventSource = new EventSource(`https://api.sibr.dev/replay/v1/replay?from=${dateTemp.toISOString()}&interval=${updateTime*1000}`);
 	self.eventSource.onmessage = doUpdates;	
 	flipUpdateFlag();
 	// self.updateGamesListFlag = true;
@@ -416,6 +418,10 @@ function increaseCurse()
 				}
 			}).connect(filter);
 			
+	
+}
+function convertTime()
+{
 	
 }
 // const bell = new Tone.MetalSynth({
