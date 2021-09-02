@@ -296,6 +296,7 @@ function doUpdates(event)
 		ballPattern.start(0);
 	
 		basepeggio = [];
+		snapshot.basesOccupied.sort();
 		for (var idx=0;idx<snapshot.basesOccupied.length;idx++)
 			{basepeggio.push(allNotes[rootIndex+getMajorIdx(baseNotes[snapshot.basesOccupied[idx]])]);}
 
@@ -305,7 +306,7 @@ function doUpdates(event)
 	
 		baseSequence.start(0);
 		console.log('|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|')				
-		console.log('inning: '+snapshot.inning+1);				
+		console.log('inning: '+(snapshot.inning+1));				
 		console.log('strikes: '+snapshot.strikes);
 		console.log('balls: '+snapshot.balls);
 		console.log('outs: '+snapshot.outs);
