@@ -2,9 +2,11 @@
 let gameIdx = 0;
 var updateTime = 4; //seconds, will control synth beats but also should control game updates 
 var updateGamesListFlag = true;
+var curseMultiplier = 1;
 
 //attach a click listener to a play button
 document.getElementById('startButton').addEventListener('click', () => {initialize()});
+document.getElementById('curseButton').addEventListener('click', () => {increaseCurse()});
 this.timeGrabber = document.getElementById('startTime');
 this.gameGrabber = document.getElementById('gamesOptions');
 
@@ -45,7 +47,7 @@ var strikeScaleIdx = [0,3,4,6,8] //ugh, zero indexing. SO this is root, 4th,5th,
 var ballScaleIdx = [0,2,4,5,6,7,9,11,12,14,16,17,18,19,21,23] //ugh, zero indexing. SO this is root, 3rd,5th,6th,7th
 // var outWigglyFactors = [15,20,50,100]
 
-const filter = new Tone.AutoFilter({
+var filter = new Tone.AutoFilter({
 			baseFrequency:'C4',
 			frequency: 0,
 			depth: 0 
@@ -281,7 +283,7 @@ function doUpdates(event)
 	
 		filter.set({
 			frequency: (4**snapshot.outs),
-			depth: .4*snapshot.outs
+			depth: (.4/curseMultiplier)*snapshot.outs
 		});
 		// strikeSynth.triggerAttack();
 	
@@ -359,6 +361,62 @@ function initialize()
 	Tone.start();
 	var trashSynth = new Tone.Synth();
 	trashSynth.triggerAttack();
+}
+function increaseCurse()
+{
+	curseMultiplier = 2;
+	filter = new Tone.Vibrato({
+				// baseFrequency:'C4',
+				frequency: 0,
+				depth: 0 
+			}).toDestination();
+	
+	awaySynth = new Tone.Synth({
+				"volume": 0,
+				"detune": 0,
+				"portamento": 0.05,
+				"envelope": {
+					"attack": 1,
+					"attackCurve": "exponential",
+					"decay": 0.1,
+					"decayCurve": "linear",
+					"release": 0,
+					"releaseCurve": "exponential",
+					"sustain": 1
+				},
+				"oscillator": {
+					"partialCount": 0,
+					"partials": [],
+					"phase": 0,
+					"type": "fatsawtooth",
+					"count": 3,
+					"spread": 10
+				}
+			}).connect(filter);
+	homeSynth = new Tone.Synth({
+				"volume": 0,
+				"detune": 0,
+				"portamento": 0.05,
+				"envelope": {
+					"attack": 1,
+					"attackCurve": "exponential",
+					"decay": 0.1,
+					"decayCurve": "linear",
+					"release": 0,
+					"releaseCurve": "exponential",
+					"sustain": 1
+				},
+				"oscillator": {
+					"partialCount": 0,
+					"partials": [],
+					"phase": 0,
+					"type": "fatsquare",
+					"count": 3,
+					"spread": 20
+				}
+			}).connect(filter);
+			
+	
 }
 // const bell = new Tone.MetalSynth({
 // 			harmonicity: 12,
