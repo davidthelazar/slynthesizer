@@ -9,7 +9,7 @@ document.getElementById('startButton').addEventListener('click', () => {initiali
 document.getElementById('curseButton').addEventListener('click', () => {increaseCurse()});
 this.timeGrabber = document.getElementById('startTime');
 this.gameGrabber = document.getElementById('gamesOptions');
-var dateTemp = new Date('2021-07-21T01:00:08.17');
+var dateTemp = new Date(document.getElementById('startTime').value);
 this.eventSource = new EventSource(`https://api.sibr.dev/replay/v1/replay?from=${dateTemp.toISOString()}`);
 this.eventSource.onmessage = doUpdates;
 let self = this;
