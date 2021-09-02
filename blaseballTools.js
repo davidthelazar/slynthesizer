@@ -13,6 +13,7 @@ function digestSnapshots(event)
         // console.log(thisGame);
         //need: inning, halfInningOuts, atBatStrikes, atBatBalls, awayScore,homeScore, basesOccupied (or baserunnerCount)
 	    // $("#updates").text(thisGame.lastUpdate);
+		snapshot.id = thisGame.id;
 		snapshot.awayTeamNickname = thisGame.awayTeamNickname;
 		snapshot.homeTeamNickname = thisGame.homeTeamNickname;			
 		snapshot.lastUpdate = thisGame.lastUpdate;
@@ -49,5 +50,18 @@ function digestSnapshots(event)
 	return snapshots;
 }
 
-
-    
+function getSnapshotById(snapshots,id)
+{
+	return snapshots.filter(function(x) { return x.id === id; })[0];
+}
+function findSnapshotById(snapshots,id)
+{
+	for (var idx=0;idx<snapshots.length;idx++)
+	{
+		if (snapshots[idx].id === id)
+		{
+			return idx;
+		}
+	}
+	return -1;
+}    
