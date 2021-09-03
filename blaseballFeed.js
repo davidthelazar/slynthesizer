@@ -1,5 +1,5 @@
 // eventSource = new EventSource(`https://api.sibr.dev/replay/v1/replay?from=2020-08-27T01:00:08.17Z`);
-var gameIdx = 0;
+var gameId = 0;
 var updateTime = 4; //seconds, will control synth beats but also should control game updates 
 var updateGamesListFlag = true;
 var curseMultiplier = 1;
@@ -27,12 +27,12 @@ this.timeGrabber.addEventListener('change', (event) => {
 this.gameGrabber.addEventListener('change', (event) => {
 	
 	choice = $('#gamesOptions').val();
-	setGameIdx(choice);
+	setgameId(choice);
 
 });
 // this.gameGrabber.addEventListener('change', (event) => {
 //
-// 	self.gameIdx = event.target.value;
+// 	self.gameId = event.target.value;
 // });
 
 
@@ -215,11 +215,15 @@ function doUpdates(event)
 	if (updateGamesListFlag)
 	{
 		updateGamesList(snapshots);
-		gameIdx = snapshots[0].id;
+		if (findSnapshotById(snapshots,gameId)===-1)
+		{
+			gameId = snapshots[0].id;
+		}
+		gameGrabber.value = gameId;
 		updateGamesListFlag = false;
 	}
 	
-	var snapshot = getSnapshotById(snapshots,gameIdx);
+	var snapshot = getSnapshotById(snapshots,gameId);
 	if (Tone.context.state === "running" && snapshot.inning>-1)
 	{
 		Tone.Transport.cancel();
@@ -312,6 +316,7 @@ function doUpdates(event)
 	
 		baseSequence.start(0);
 		console.log('|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|')				
+		console.log(snapshot.awayTeamNickname+' at ' + snapshot.homeTeamNickname);
 		console.log('inning: '+(snapshot.inning+1));				
 		console.log('strikes: '+snapshot.strikes);
 		console.log('balls: '+snapshot.balls);
@@ -356,9 +361,9 @@ function flipUpdateFlag()
 {
 	updateGamesListFlag= true;
 }
-function setGameIdx(choice)
+function setgameId(choice)
 {
-	gameIdx = choice;
+	gameId = choice;
 }
 function initialize()
 {
