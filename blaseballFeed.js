@@ -286,8 +286,8 @@ function doUpdates(event)
 		}			
 	
 		filter.set({
-			frequency: (4**snapshot.outs),
-			depth: (.4/curseMultiplier)*snapshot.outs
+			frequency: 100*Math.tanh(snapshot.outs/13),
+			depth: Math.tanh(snapshot.outs/(3*curseMultiplier))
 		});
 		// strikeSynth.triggerAttack();
 	
