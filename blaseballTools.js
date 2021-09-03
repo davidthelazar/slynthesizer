@@ -7,8 +7,8 @@ function digestSnapshots(event)
 	//TODO deal with fifth base
 	for (let idx = 0; idx < games.length; idx++) 
 	{
-        gameId = games[idx].id;
-		thisGame = games.filter(function(x) { return x.id === gameId; })[0];
+        idTemp = games[idx].id;
+		thisGame = games.filter(function(x) { return x.id === idTemp; })[0];
 		let snapshot={};
         // console.log(thisGame);
         //need: inning, halfInningOuts, atBatStrikes, atBatBalls, awayScore,homeScore, basesOccupied (or baserunnerCount)
