@@ -45,8 +45,8 @@ var octaveStep = 12;
 var minimumIndex = allNotes.indexOf('C3');
 var rootIndex = minimumIndex;
 
-var strikeScaleIdx = [0,3,4,6,8] //ugh, zero indexing. SO this is root, 4th,5th,7th
-var ballScaleIdx = [0,2,4,5,6,7,9,11,12,14,16,17,18,19,21,23] //ugh, zero indexing. SO this is root, 3rd,5th,6th,7th
+var strikeScaleIdx = [0,3,4,6,7,10,11,13,14]; //ugh, zero indexing. SO this is root, 4th,5th,7th
+var ballScaleIdx = [0,2,4,5,6,7,9,11,12,14,16,17,18,19,21+0,21+2,21+4,21+5,21+6,21+7,21+9,21+11,21+12,21+14,21+16,21+17,21+18,21+19,42+0,42+2,42+4,42+5,42+6,42+7,42+9,42+11,42+12,42+14,42+16,42+17,42+18,42+19]; //ugh, zero indexing. SO this is root, 3rd,5th,6th,7th
 // var outWigglyFactors = [15,20,50,100]
 
 var filter = new Tone.AutoFilter({
@@ -188,7 +188,7 @@ var baseSynth = new Tone.PolySynth({
 	}
 }).toDestination(); //Should this go through the filter?
 		
-var baseNotes = [3,5,6,14]; //fuck, 4th, 6th, and 7th, sounds like LoZ
+var baseNotes = [3,5,6,14,17]; //fuck, 4th, 6th, and 7th, sounds like LoZ
 		// 467
 var baseSequence = new Tone.Sequence((time, note) => {
 	synth.triggerAttackRelease(note, .5, time);
