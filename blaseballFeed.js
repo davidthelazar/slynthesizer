@@ -8,13 +8,15 @@ if (urlGameId !==null)
 {
 	gameId = urlGameId;
 }
-var updateTime = 4; //seconds, will control synth beats but also should control game updates 
+const updateTime = 4; //seconds, will control synth beats but also should control game updates 
+var updateTimeFudged = updateTime;
 var updateGamesListFlag = true;
 var curseMultiplier = 1;
 var previousSnapshot = {};
 //attach a click listener to a play button
 document.getElementById('startButton').addEventListener('click', () => {initialize()});
 document.getElementById('curseButton').addEventListener('click', () => {increaseCurse()});
+
 this.timeGrabber = document.getElementById('startTime');
 if (urlStartTime!==null)
 {
@@ -23,6 +25,7 @@ if (urlStartTime!==null)
 	this.timeGrabber.value = timeStr;
 }
 this.gameGrabber = document.getElementById('gamesOptions');
+this.updateRateGrabber = document.getElementById('updateRateSelect');
 var dateTemp = new Date(document.getElementById('startTime').value);
 this.eventSource = new EventSource(`https://api.sibr.dev/replay/v1/replay?from=${dateTemp.toISOString()}`);
 this.eventSource.onmessage = doUpdates;
@@ -32,7 +35,7 @@ this.timeGrabber.addEventListener('change', (event) => {
 	self.eventSource.close();
 	var dateTemp = new Date(event.target.value);
 	console.log(dateTemp.toUTCString());
-	self.eventSource = new EventSource(`https://api.sibr.dev/replay/v1/replay?from=${dateTemp.toISOString()}&interval=${updateTime*1000}`);
+	self.eventSource = new EventSource(`https://api.sibr.dev/replay/v1/replay?from=${dateTemp.toISOString()}&interval=${updateTimeFudged*1000}`);
 	self.eventSource.onmessage = doUpdates;	
 	flipUpdateFlag();
 	// self.updateGamesListFlag = true;
@@ -45,6 +48,18 @@ this.gameGrabber.addEventListener('change', (event) => {
 	strTemp = replaceQueryParam('game', gameId, strTemp);
 	history.replaceState({test:'test'},'game',strTemp);
 
+});
+this.updateRateGrabber.addEventListener('change', (event) => {
+	
+	if (event.target.value)
+		{updateTimeFudged = updateTime/3;}
+	else
+		{updateTimeFudged = updateTime}
+	var strTemp = self.eventSource.url;
+	strTemp = replaceQueryParam('interval',`${updateTimeFudged*1000}`, strTemp);
+	self.eventSource.close();
+	self.eventSource = new EventSource(strTemp);
+	self.eventSource.onmessage = doUpdates;	
 });
 // this.gameGrabber.addEventListener('change', (event) => {
 //
