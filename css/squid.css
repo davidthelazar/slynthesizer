@@ -6,6 +6,20 @@
     font-weight: 700;
 	color:#fff
 }
+#mainContent{
+	font-family: "Lora";
+    text-align: left;
+	margin: 20px 0;
+    font-size: 16px;
+    font-weight: 700;
+	color:#ffffff;
+	line-height:1.6
+}
+a:link, a:visited {
+    color: yellow;
+	background-color: transparent;
+	text-decoration: underline;
+}
 #startButton{
 	
 }
