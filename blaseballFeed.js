@@ -1,5 +1,13 @@
 // eventSource = new EventSource(`https://api.sibr.dev/replay/v1/replay?from=2020-08-27T01:00:08.17Z`);
+const urlParams = new URLSearchParams(window.location.search);
+const urlStartTime = urlParams.get('at');
+const urlGameId = urlParams.get('game');
+
 var gameId = 0;
+if (urlGameId !==null)
+{
+	gameId = urlGameId;
+}
 var updateTime = 4; //seconds, will control synth beats but also should control game updates 
 var updateGamesListFlag = true;
 var curseMultiplier = 1;
@@ -8,6 +16,12 @@ var curseMultiplier = 1;
 document.getElementById('startButton').addEventListener('click', () => {initialize()});
 document.getElementById('curseButton').addEventListener('click', () => {increaseCurse()});
 this.timeGrabber = document.getElementById('startTime');
+if (urlStartTime!==null)
+{
+	const timeTemp = new Date(urlStartTime);
+	const timeStr = toLocalIsoString(timeTemp);
+	this.timeGrabber.value = timeStr;
+}
 this.gameGrabber = document.getElementById('gamesOptions');
 var dateTemp = new Date(document.getElementById('startTime').value);
 this.eventSource = new EventSource(`https://api.sibr.dev/replay/v1/replay?from=${dateTemp.toISOString()}`);
@@ -22,12 +36,14 @@ this.timeGrabber.addEventListener('change', (event) => {
 	self.eventSource.onmessage = doUpdates;	
 	flipUpdateFlag();
 	// self.updateGamesListFlag = true;
-
 });
 this.gameGrabber.addEventListener('change', (event) => {
 	
 	choice = $('#gamesOptions').val();
-	setgameId(choice);
+	setGameId(choice);
+	var strTemp = window.location.search;
+	strTemp = replaceQueryParam('game', gameId, strTemp);
+	history.replaceState({test:'test'},'game',strTemp);
 
 });
 // this.gameGrabber.addEventListener('change', (event) => {
@@ -356,12 +372,17 @@ function updateGamesList(allSnapshots)
 
 		$('#gamesOptions').append($('<option></option>').val(allSnapshots[idx].id).html(str));
 	}
+	
+	var strTemp = window.location.search;
+	dateTemp = new Date(timeGrabber.value);
+	strTemp = replaceQueryParam('at', dateTemp.toISOString(), strTemp);
+	history.replaceState({test:'test'},'time',strTemp);
 }
 function flipUpdateFlag()
 {
 	updateGamesListFlag= true;
 }
-function setgameId(choice)
+function setGameId(choice)
 {
 	gameId = choice;
 }
@@ -430,6 +451,20 @@ function increaseCurse()
 function convertTime()
 {
 	
+}
+function toLocalIsoString(date) {
+    const offsetMs = date.getTimezoneOffset() * 60 * 1000;
+    const msLocal =  date.getTime() - offsetMs;
+    const dateLocal = new Date(msLocal);
+    const iso = dateLocal.toISOString();
+    const isoLocal = iso.slice(0, 19);
+    return isoLocal;
+}
+function replaceQueryParam(param, newval, search) {
+    var regex = new RegExp("([?;&])" + param + "[^&;]*[;&]?");
+    var query = search.replace(regex, "$1").replace(/&$/, '');
+
+    return (query.length > 2 ? query + "&" : "?") + (newval ? param + "=" + newval : '');
 }
 // const bell = new Tone.MetalSynth({
 // 			harmonicity: 12,
