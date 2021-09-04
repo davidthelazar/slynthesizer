@@ -11,7 +11,7 @@ if (urlGameId !==null)
 var updateTime = 4; //seconds, will control synth beats but also should control game updates 
 var updateGamesListFlag = true;
 var curseMultiplier = 1;
-
+var previousUpdate = '';
 //attach a click listener to a play button
 document.getElementById('startButton').addEventListener('click', () => {initialize()});
 document.getElementById('curseButton').addEventListener('click', () => {increaseCurse()});
@@ -236,12 +236,15 @@ function doUpdates(event)
 			gameId = snapshots[0].id;
 		}
 		gameGrabber.value = gameId;
+		var event = new Event('change');
+		gameGrabber.dispatchEvent(event);
 		updateGamesListFlag = false;
 	}
 	
 	var snapshot = getSnapshotById(snapshots,gameId);
-	if (Tone.context.state === "running" && snapshot.inning>-1)
+	if (Tone.context.state === "running" && snapshot.inning>-1 && snapshot.lastUpdate!==previousUpdate)
 	{
+		previousUpdate = snapshot.lastUpdate;
 		Tone.Transport.cancel();
 
 		
@@ -333,6 +336,7 @@ function doUpdates(event)
 		baseSequence.start(0);
 		console.log('|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|')				
 		// console.log(snapshot.awayTeamNickname+' at ' + snapshot.homeTeamNickname);
+		console.log(snapshot.lastUpdate);
 		console.log('inning: '+(snapshot.inning+1));				
 		console.log('strikes: '+snapshot.strikes);
 		console.log('balls: '+snapshot.balls);
