@@ -65,3 +65,31 @@ function findSnapshotById(snapshots,id)
 	}
 	return -1;
 }    
+function compareSnapshots(snap1,snap2)
+{
+	for (const property in snap1) {
+		if (property=='basesOccupied')
+		{	
+			if (snap1[property].length !== snap2[property].length)
+				{return false;}
+			if (snap1[property].length !==0)
+			{
+				for (item in snap1[property])
+				{
+					if(!snap2[property].includes(item))
+					{
+						return false;
+					}
+				}
+			}
+		}
+		else
+		{
+			if (snap1[property] !== snap2[property])
+			{
+				return false;
+			}
+		}
+  }
+  return true;
+}

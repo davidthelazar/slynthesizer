@@ -11,7 +11,7 @@ if (urlGameId !==null)
 var updateTime = 4; //seconds, will control synth beats but also should control game updates 
 var updateGamesListFlag = true;
 var curseMultiplier = 1;
-var previousUpdate = '';
+var previousSnapshot = {};
 //attach a click listener to a play button
 document.getElementById('startButton').addEventListener('click', () => {initialize()});
 document.getElementById('curseButton').addEventListener('click', () => {increaseCurse()});
@@ -242,9 +242,9 @@ function doUpdates(event)
 	}
 	
 	var snapshot = getSnapshotById(snapshots,gameId);
-	if (Tone.context.state === "running" && snapshot.inning>-1 && snapshot.lastUpdate!==previousUpdate)
+	if (Tone.context.state === "running" && snapshot.inning>-1 && !compareSnapshots(snapshot,previousSnapshot))
 	{
-		previousUpdate = snapshot.lastUpdate;
+		previousSnapshot = Object.assign(previousSnapshot,snapshot);
 		Tone.Transport.cancel();
 
 		
