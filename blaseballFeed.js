@@ -26,6 +26,7 @@ if (urlStartTime!==null)
 }
 this.gameGrabber = document.getElementById('gamesOptions');
 this.updateRateGrabber = document.getElementById('updateRateSelect');
+this.volumeGrabber = document.getElementById('volumeSlider');
 var dateTemp = new Date(document.getElementById('startTime').value);
 this.eventSource = new EventSource(`https://api.sibr.dev/replay/v1/replay?from=${dateTemp.toISOString()}`);
 this.eventSource.onmessage = doUpdates;
@@ -61,6 +62,16 @@ this.updateRateGrabber.addEventListener('change', (event) => {
 	self.eventSource = new EventSource(strTemp);
 	self.eventSource.onmessage = doUpdates;	
 });
+this.volumeGrabber.addEventListener('change', (event) => {
+	var volTemp = (event.target.value-100)/2;
+	if (event.target.value == 0)
+	{
+		volTemp = -Infinity;
+	}
+	Tone.getDestination().volume.rampTo(volTemp, 0);
+});
+var eventTemp = new Event('change');
+volumeGrabber.dispatchEvent(eventTemp);
 // this.gameGrabber.addEventListener('change', (event) => {
 //
 // 	self.gameId = event.target.value;
