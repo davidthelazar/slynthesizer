@@ -74,13 +74,21 @@ function compareSnapshots(snap1,snap2)
 				{return false;}
 			if (snap1[property].length !==0)
 			{
-				for (item in snap1[property])
+				for (var idx=0;idx<snap1[property].length;idx++)
 				{
-					if(!snap2[property].includes(item))
+					if(!snap2[property].includes(snap1[property][idx]))
 					{
 						return false;
 					}
 				}
+				// snap1.forEach(item=>{if(snap2[property].includes(item){return false;})})
+				// for (item in snap1[property])
+				// {
+				// 	
+				// 	{
+				// 		return false;
+				// 	}
+				// }
 			}
 		}
 		else
