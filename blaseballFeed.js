@@ -247,6 +247,21 @@ var ballPattern = new Tone.Pattern(function(time, note){
 		}, []).start(0);
 var ballpeggio = [];
 
+var distortion = new Tone.Distortion(0.8).toDestination();
+
+var insyntherated1 = new Tone.DuoSynth({
+	volume:10,
+	oscillator:{type:"fattriangle"}
+}).connect(distortion);
+var insyntherated2 = new Tone.DuoSynth({
+	volume:10,
+	oscillator:{type:"fatsawtooth"}
+}).connect(distortion);
+var insyntherated3 = new Tone.DuoSynth({
+	volume:10,
+	oscillator:{type:"fatsine"}
+}).connect(distortion);
+
 Tone.Transport.start();
 function doUpdates(event)
 {		
@@ -360,6 +375,11 @@ function doUpdates(event)
 		}, basepeggio,updateTime/(2*basepeggio.length)).start(0);
 	
 		baseSequence.start(0);
+		if (snapshot.lastUpdate.includes('incinerated'))
+			{insyntherated1.triggerAttackRelease(allNotes[rootIndex+48],updateTime).frequency.rampTo(allNotes[rootIndex-24],4);
+			insyntherated2.triggerAttackRelease(allNotes[rootIndex+44],updateTime).frequency.rampTo(allNotes[rootIndex-20],4);
+			insyntherated3.triggerAttackRelease(allNotes[rootIndex+41],updateTime).frequency.rampTo(allNotes[rootIndex-21],4);
+			}
 		console.log('|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|')				
 		// console.log(snapshot.awayTeamNickname+' at ' + snapshot.homeTeamNickname);
 		console.log(snapshot.lastUpdate);
