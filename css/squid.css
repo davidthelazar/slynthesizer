@@ -20,6 +20,15 @@ a:link, a:visited {
 	background-color: transparent;
 	text-decoration: underline;
 }
+#mainContentHeader{
+	font-family: "Lora";
+    text-align: left;
+	margin: 20px 0;
+    font-size: 24px;
+    font-weight: 700;
+	color:#ffffff;
+	line-height:1.6
+}
 #startButton{
 	
 }
