@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Slynthesizer</title>
+	<!-- <link rel="shortcut icon" href="/favicon.ico">  need favicon.ico --> 
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src='../blaseballfiles/blaseballTools.js' defer></script>
+	<script src='../blaseballfiles/slynthesizer.js' defer></script>
+	<script src='https://tonejs.github.io/build/Tone.js'></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="css/slynthesizer.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="background-color:#000000;"> 
+	
+	<div id="titleContent">
+		<p>Please imagine graphics...</p>
+	</div>
+	<center>
+		<button type="button" id = "startButton">Click Me!</button>
+		<br>
+		<!-- <label for="startTime">Enter a time:</label> -->
+		<input type="datetime-local" id="startTime" name="startTime" value="2021-07-21T01:01">
+		<br>
+		<!-- <label for="games">Choose a game:</label> -->
+
+		<select name="games" id="gamesOptions">
+		</select>
+		<br><br>
+		<label for="volumeSlider" style='color:white'>Volume:</label>
+		<input type="range" name="volume" id="volumeSlider" min="0" max="100" value="25">
+		<br><br>
+		<label for="speedSlider" style='color:white'>Speed (adjusting will reset to start time):</label>
+		<input type="range" name="speed" id="speedSlider" min="1" max="6" value="3">
+		<br><br>
+		<button type="button" id = "curseButton">I thought you said this was <i>cursed</i></button>
+		<br><br><br>
+		<label for="updateRate" style='color:white'>Some old games run slowly, this might fix them (resets to start time):</label>
+		<input type='checkbox' name="updateRate" id="updateRateSelect">
+		<br><br>
+		<a href="slynthDocs.html" target="_blank">Documentation</a>
+		</select>
+		
+	</center>
+		
+</body>
+</html>

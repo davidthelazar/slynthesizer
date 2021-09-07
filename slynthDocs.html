@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Slynthesizer docs</title>
+	<!-- <link rel="shortcut icon" href="/favicon.ico">  need favicon.ico --> 
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<!-- <script src='blaseballTools.js' defer></script>
+	<script src='blaseballFeed.js' defer></script> -->
+	<!-- <script src='https://tonejs.github.io/build/Tone.js'></script> -->
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="css/squid.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="background-color:#000000;"> 
+	
+	<div id="titleContent">
+		<p>Slynthesizer Docs</p>
+	</div>
+
+	<div id="mainContent">
+		<center><p>An audio-only cursed Blaseball viewer created by David Lazar (superfluous#5021) for the SIBR hackathon</p></center>
+		<p id="mainContentHeader">Helpful usage notes:</p>
+		<ul>
+			<li>The "click me" button only needs clicked once per session. Its only purpose is to tell the browser you want it to make sound. 
+				<li>URL query parameters can be passed in (Any updates from the UI will update the URL for sharing): 
+					<ul>
+						<li>'at' accepts a UTC time string at which to start slynth</li>
+						<li>'game' accepts a game ID. Note that if the game ID is not valid at the start time it will be ignored.</li> 
+					</ul>
+				</li>
+			<li>Nominal update rate is every 4 seconds. Clicking the fixer checkbox runs 3 times as fast to deal with duped updates in some older games. It will definitely ruin modern games that are already deduped by chronicler. Turning on/off the checkbox will reset back to the entered start time.</li>
+			<li>Game state updates are printed to the browser console for following along, if desired</li>
+			<li>"I thought you said this was <i>cursed</i>" button replaces main synths with 'fat' versions and changes the out progression behavior slightly</li>
+		</ul>
+		<p id="mainContentHeader">How Slynthesizer translates Blaseball updates:</p>
+		<ul>
+			<li>Main synth:
+				<ul>
+					<li>Oscillator/voice changes based on which team is batting (home/away)</li>
+					<li>All intervals below are relative to a major scale</li>
+					<li>Each inning, the root tone moves up by a half step</li>
+					<li>Each strike, the root tone in the ballpeggio below moves up to the major [4, 5, 7, 9] above the inning root</li>
+					<li>Each update, the main synth plays a rising arpeggio of 2^(balls) tones from: [root],3],5,6],7,8,10,12],13,15,17,18,19,20,22,24] major intervals relative to strike+inning root</li>
+					<li>Each out increases the frequency and depth of the wiggly low-pass filter</li>
+				</ul>
+			</li>
+			<li>Simple sine synth:
+				<ul>
+					<li>Arpeggiates one note per occupied base at the major [1:4,2:6,3:7,4:15] above inning root, twice per game update</li>
+				</ul>
+			</li>
+
+			<li>Percussion synths:
+				<ul>
+					<li>Home synth is kick-like, away synth is hihat-like</li>
+					<li>One hit per each abs(score) each game update</li>
+					<li>Synth voicing changes if score is negative</li>
+				</ul>
+			</li>
+			<li>Incineration synths:
+				<ul>
+					<li>When a player or team is incinerated, 3 loud distorted synths will form a minor chord and sickeningly dive through multiple octaves for an entire game update</li>
+					<li>It's pretty gross</li>
+				</ul>
+			</li>
+		</ul>
+		<p id="mainContentHeader">Some interesting moments to check out:</p>
+		<ul>
+			<li><a href="http://davidthelazar.com/slynthesizer/?at=2020-10-05T16:30:00.000Z&game=d8b6e7e6-ad7f-4220-88de-c8e235f337f1" target="_blank">12th inning of Crowvertime</a></li>
+			<li><a href="http://davidthelazar.com/slynthesizer/index.html?at=2021-03-01T16:05:00.000Z&game=f316424b-a5c5-48eb-ae1e-c2cfa6bde4bb" target="_blank">Foul ball. 0-2</a></li>
+			<li><a href="http://davidthelazar.com/slynthesizer/index.html?at=2021-07-26T17:13:00.000Z&game=eacbd395-2d14-43d1-bff2-7be7d9992702">The Breath Mints.</a></li>	
+			<li><a href="http://davidthelazar.com/slynthesizer/?at=2021-07-25T02:01:10.000Z&game=d162b23a-9832-4e78-8d78-5d131393fd61">The Semi-Centennial</a></li>	
+			<li><a href="http://davidthelazar.com/slynthesizer/index.html?at=2021-04-09T19:21:30.000Z&game=e9d67ee9-2330-47e9-876a-79860f215f16">Lead up to a Maximum Blaseball</a></li>
+		</ul>
+
+			
+		
+</body>
+</html>
